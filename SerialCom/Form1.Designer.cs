@@ -328,10 +328,11 @@
             // 
             // textBoxReceive
             // 
-            this.textBoxReceive.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBoxReceive.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.textBoxReceive.Location = new System.Drawing.Point(3, 19);
             this.textBoxReceive.Multiline = true;
             this.textBoxReceive.Name = "textBoxReceive";
+            this.textBoxReceive.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBoxReceive.Size = new System.Drawing.Size(270, 193);
             this.textBoxReceive.TabIndex = 0;
             // 

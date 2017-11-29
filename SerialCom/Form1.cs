@@ -212,13 +212,16 @@ namespace SerialCom
                 if (radioButtonReceiveDataASCII.Checked == true) //接收格式为ASCII
                 {
                     textBoxReceive.Text += serialPort.ReadLine() + "\r\n";
+                    textBoxReceive.SelectionStart = textBoxReceive.Text.Length;
+                    textBoxReceive.ScrollToCaret();//滚动到光标处
                     serialPort.DiscardInBuffer(); //清空SerialPort控件的Buffer 
                 }
                 else //接收格式为HEX
                 {
                     try
                     {
-                        string input = "Hello World!";
+
+                        string input = serialPort.ReadLine();
                         char[] values = input.ToCharArray();
                         foreach (char letter in values)
                         {
@@ -226,8 +229,11 @@ namespace SerialCom
                             int value = Convert.ToInt32(letter);
                             // Convert the decimal value to a hexadecimal value in string form.
                             string hexOutput = String.Format("{0:X}", value);
-                            textBoxReceive.Text += hexOutput + "\r\n";
-                   
+                            textBoxReceive.AppendText(hexOutput + " ");
+                            textBoxReceive.SelectionStart = textBoxReceive.Text.Length;
+                            textBoxReceive.ScrollToCaret();//滚动到光标处
+                            //textBoxReceive.Text += hexOutput + " ";
+
                         }
 
 
@@ -263,6 +269,18 @@ namespace SerialCom
             else
             {
                 //16进制数据格式 HXE 发送
+                 
+                char[] values = strSend.ToCharArray();
+                foreach (char letter in values)
+                {
+                    // Get the integral value of the character.
+                    int value = Convert.ToInt32(letter);
+                    // Convert the decimal value to a hexadecimal value in string form.
+                    string hexIutput = String.Format("{0:X}", value);
+                    serialPort.WriteLine(hexIutput);
+
+                }
+
 
 
             }
