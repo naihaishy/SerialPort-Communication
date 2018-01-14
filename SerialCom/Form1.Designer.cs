@@ -34,6 +34,8 @@
             this.MenuTools = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuSetting = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuIHelp = new System.Windows.Forms.ToolStripMenuItem();
+            this.关于ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.作者ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.groupBoxSerialPortSetting = new System.Windows.Forms.GroupBox();
             this.comboBoxStopBit = new System.Windows.Forms.ComboBox();
@@ -59,6 +61,9 @@
             this.groupBoxSendData = new System.Windows.Forms.GroupBox();
             this.buttonSendData = new System.Windows.Forms.Button();
             this.textBoxSend = new System.Windows.Forms.TextBox();
+            this.Button_Refresh = new System.Windows.Forms.Button();
+            this.贡献者SylvesterLiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.groupBoxSerialPortSetting.SuspendLayout();
             this.groupBoxSendSetting.SuspendLayout();
@@ -82,6 +87,8 @@
             // 
             // MenuFile
             // 
+            this.MenuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.退出ToolStripMenuItem});
             this.MenuFile.Name = "MenuFile";
             this.MenuFile.Size = new System.Drawing.Size(44, 21);
             this.MenuFile.Text = "文件";
@@ -100,9 +107,26 @@
             // 
             // MenuIHelp
             // 
+            this.MenuIHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.关于ToolStripMenuItem});
             this.MenuIHelp.Name = "MenuIHelp";
             this.MenuIHelp.Size = new System.Drawing.Size(44, 21);
             this.MenuIHelp.Text = "帮助";
+            // 
+            // 关于ToolStripMenuItem
+            // 
+            this.关于ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.作者ToolStripMenuItem,
+            this.贡献者SylvesterLiToolStripMenuItem});
+            this.关于ToolStripMenuItem.Name = "关于ToolStripMenuItem";
+            this.关于ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.关于ToolStripMenuItem.Text = "关于";
+            // 
+            // 作者ToolStripMenuItem
+            // 
+            this.作者ToolStripMenuItem.Name = "作者ToolStripMenuItem";
+            this.作者ToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.作者ToolStripMenuItem.Text = "作者：NaiHai";
             // 
             // toolStrip1
             // 
@@ -126,7 +150,7 @@
             this.groupBoxSerialPortSetting.Controls.Add(this.label1);
             this.groupBoxSerialPortSetting.Location = new System.Drawing.Point(12, 53);
             this.groupBoxSerialPortSetting.Name = "groupBoxSerialPortSetting";
-            this.groupBoxSerialPortSetting.Size = new System.Drawing.Size(200, 217);
+            this.groupBoxSerialPortSetting.Size = new System.Drawing.Size(200, 219);
             this.groupBoxSerialPortSetting.TabIndex = 2;
             this.groupBoxSerialPortSetting.TabStop = false;
             this.groupBoxSerialPortSetting.Text = "串口设置";
@@ -228,9 +252,9 @@
             // 
             // buttonOpenCloseCom
             // 
-            this.buttonOpenCloseCom.Location = new System.Drawing.Point(449, 53);
+            this.buttonOpenCloseCom.Location = new System.Drawing.Point(413, 38);
             this.buttonOpenCloseCom.Name = "buttonOpenCloseCom";
-            this.buttonOpenCloseCom.Size = new System.Drawing.Size(75, 23);
+            this.buttonOpenCloseCom.Size = new System.Drawing.Size(111, 38);
             this.buttonOpenCloseCom.TabIndex = 3;
             this.buttonOpenCloseCom.Text = "打开串口";
             this.buttonOpenCloseCom.UseVisualStyleBackColor = true;
@@ -369,11 +393,35 @@
             this.textBoxSend.Size = new System.Drawing.Size(270, 45);
             this.textBoxSend.TabIndex = 0;
             // 
+            // Button_Refresh
+            // 
+            this.Button_Refresh.Location = new System.Drawing.Point(254, 38);
+            this.Button_Refresh.Name = "Button_Refresh";
+            this.Button_Refresh.Size = new System.Drawing.Size(110, 38);
+            this.Button_Refresh.TabIndex = 10;
+            this.Button_Refresh.Text = "刷新串口列表";
+            this.Button_Refresh.UseVisualStyleBackColor = true;
+            this.Button_Refresh.Click += new System.EventHandler(this.Button_Refresh_Click);
+            // 
+            // 贡献者SylvesterLiToolStripMenuItem
+            // 
+            this.贡献者SylvesterLiToolStripMenuItem.Name = "贡献者SylvesterLiToolStripMenuItem";
+            this.贡献者SylvesterLiToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.贡献者SylvesterLiToolStripMenuItem.Text = "贡献者：Sylvester Li";
+            // 
+            // 退出ToolStripMenuItem
+            // 
+            this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
+            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.退出ToolStripMenuItem.Text = "退出";
+            this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(569, 512);
+            this.Controls.Add(this.Button_Refresh);
             this.Controls.Add(this.groupBoxSendData);
             this.Controls.Add(this.groupBoxReceiveData);
             this.Controls.Add(this.groupBoxReceiveSetting);
@@ -387,7 +435,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "串口调试软件";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -438,6 +486,11 @@
         private System.Windows.Forms.Button buttonClearRecData;
         private System.Windows.Forms.TextBox textBoxSend;
         private System.Windows.Forms.Button buttonSendData;
+        private System.Windows.Forms.Button Button_Refresh;
+        private System.Windows.Forms.ToolStripMenuItem 关于ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 作者ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 贡献者SylvesterLiToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 退出ToolStripMenuItem;
     }
 }
 
