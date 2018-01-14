@@ -38,7 +38,7 @@ namespace SerialCom
                 comboBoxCom.Items.Add(s);
             }
             //设置默认串口选项
-            comboBoxCom.SelectedIndex = 0;
+            comboBoxCom.SelectedIndex = -1;
 
             /*------波特率设置-------*/
             string[] baudRate = { "9600","19200", "38400","57600","115200"};
@@ -206,12 +206,24 @@ namespace SerialCom
                 //MessageBox.Show("sss","OK");
                 //输出当前时间
                 DateTime dateTimeNow = DateTime.Now;
-                textBoxReceive.Text += dateTimeNow.GetDateTimeFormats('f')[0].ToString() + "\r\n";
+                //dateTimeNow.GetDateTimeFormats();
+                textBoxReceive.Text += string.Format("{0}\r\n", dateTimeNow);
+                    //dateTimeNow.GetDateTimeFormats('f')[0].ToString() + "\r\n";
                 textBoxReceive.ForeColor = Color.Red;    //改变字体的颜色
 
                 if (radioButtonReceiveDataASCII.Checked == true) //接收格式为ASCII
                 {
-                    textBoxReceive.Text += serialPort.ReadLine() + "\r\n";
+                    try
+                    {
+                        textBoxReceive.Text += serialPort.ReadLine() + "\r\n";
+
+                    }
+                    catch(System.Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "你波特率是不是有问题？？？");
+                        return;
+                    }
+                    
                     textBoxReceive.SelectionStart = textBoxReceive.Text.Length;
                     textBoxReceive.ScrollToCaret();//滚动到光标处
                     serialPort.DiscardInBuffer(); //清空SerialPort控件的Buffer 
@@ -306,5 +318,29 @@ namespace SerialCom
             
         }
 
+        private void Button_Refresh_Click(object sender, EventArgs e)
+        {
+            comboBoxCom.Text = "";
+            comboBoxCom.Items.Clear();
+            
+            string[] str = SerialPort.GetPortNames();
+            if (str == null)
+            {
+                MessageBox.Show("本机没有串口！", "Error");
+                return;
+            }
+            //添加串口
+            foreach (string s in str)
+            {
+                comboBoxCom.Items.Add(s);
+            }
+            //设置默认串口选项
+            comboBoxCom.SelectedIndex = -1;
+        }
+
+        private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }
