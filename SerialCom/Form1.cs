@@ -11,20 +11,23 @@ using System.Windows.Forms;
 
 namespace SerialCom
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
 
         //实例化串口对象
         SerialPort serialPort = new SerialPort();
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
         }
-        //加载窗体1 主窗体
-        private void Form1_Load(object sender, EventArgs e)
+
+
+        //初始化串口界面参数设置
+        private void Init_Port_Confs()
         {
-            /*------串口设置------*/
+            /*------串口界面参数设置------*/
+
             //检查是否含有串口
             string[] str = SerialPort.GetPortNames();
             if (str == null)
@@ -33,23 +36,23 @@ namespace SerialCom
                 return;
             }
             //添加串口
-            foreach(string s in str)
+            foreach (string s in str)
             {
                 comboBoxCom.Items.Add(s);
             }
             //设置默认串口选项
-            comboBoxCom.SelectedIndex = -1;
+            comboBoxCom.SelectedIndex = 0;
 
             /*------波特率设置-------*/
-            string[] baudRate = { "9600","19200", "38400","57600","115200"};
-            foreach(string s in baudRate)
+            string[] baudRate = { "9600", "19200", "38400", "57600", "115200" };
+            foreach (string s in baudRate)
             {
                 comboBoxBaudRate.Items.Add(s);
             }
             comboBoxBaudRate.SelectedIndex = 0;
 
             /*------数据位设置-------*/
-            string[] dataBit = { "5", "6","7","8"};
+            string[] dataBit = { "5", "6", "7", "8" };
             foreach (string s in dataBit)
             {
                 comboBoxDataBit.Items.Add(s);
@@ -58,7 +61,7 @@ namespace SerialCom
 
 
             /*------校验位设置-------*/
-            string[] checkBit = { "None", "Even", "Odd", "Mask", "Space"};
+            string[] checkBit = { "None", "Even", "Odd", "Mask", "Space" };
             foreach (string s in checkBit)
             {
                 comboBoxCheckBit.Items.Add(s);
@@ -67,7 +70,7 @@ namespace SerialCom
 
 
             /*------停止位设置-------*/
-            string[] stopBit = { "1", "1.5","2" };
+            string[] stopBit = { "1", "1.5", "2" };
             foreach (string s in stopBit)
             {
                 comboBoxStopBit.Items.Add(s);
@@ -77,6 +80,13 @@ namespace SerialCom
             /*------数据格式设置-------*/
             radioButtonSendDataASCII.Checked = true;
             radioButtonReceiveDataASCII.Checked = true;
+        }
+
+        //加载主窗体
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
+            Init_Port_Confs();
 
             Control.CheckForIllegalCrossThreadCalls = false;
             serialPort.DataReceived += new SerialDataReceivedEventHandler(dataReceived);
@@ -93,6 +103,8 @@ namespace SerialCom
             buttonSendData.Enabled = false;
 
         }
+
+
         //打开串口 关闭串口
         private void buttonOpenCloseCom_Click(object sender, EventArgs e)
         {
@@ -102,18 +114,28 @@ namespace SerialCom
                 try
                 {
                     
-                    string strSerialName = comboBoxCom.SelectedItem.ToString();
-                    string strBaudRate = comboBoxBaudRate.SelectedItem.ToString(); //string strBaudRate = comboBoxBaudRate.Text;
-                    string strDataBit = comboBoxDataBit.SelectedItem.ToString();
-                    string strCheckBit = comboBoxCheckBit.SelectedItem.ToString();
-                    string strStopBit = comboBoxStopBit.SelectedItem.ToString();
+                    if (comboBoxCom.SelectedIndex == -1)
+                    {
+                        MessageBox.Show("Error: 无效的端口,请重新选择", "Error");
+                        return;
+                    }
+                    string strSerialName    = comboBoxCom.SelectedItem.ToString();
+                    string strBaudRate      = comboBoxBaudRate.SelectedItem.ToString();
+                    string strDataBit       = comboBoxDataBit.SelectedItem.ToString();
+                    string strCheckBit      = comboBoxCheckBit.SelectedItem.ToString();
+                    string strStopBit       = comboBoxStopBit.SelectedItem.ToString();
 
                     Int32 iBaudRate = Convert.ToInt32(strBaudRate);
-                    Int32 iDataBit = Convert.ToInt32(strDataBit);
+                    Int32 iDataBit  = Convert.ToInt32(strDataBit);
 
                     serialPort.PortName = strSerialName;//串口号
                     serialPort.BaudRate = iBaudRate;//波特率
                     serialPort.DataBits = iDataBit;//数据位
+
+                    
+
+
+                    
 
                     switch (strStopBit)            //停止位
                     {
@@ -146,7 +168,9 @@ namespace SerialCom
                             break;
                     }
 
+
                     
+
 
                     //打开串口
                     serialPort.Open();
@@ -162,19 +186,14 @@ namespace SerialCom
                     radioButtonReceiveDataASCII.Enabled = false;
                     radioButtonReceiveDataHEX.Enabled = false;
                     buttonSendData.Enabled = true;
+                    Button_Refresh.Enabled = false;
 
                     buttonOpenCloseCom.Text = "关闭串口";
-
-
-
-
-
 
                 }
                 catch(System.Exception ex)
                 {
                     MessageBox.Show("Error:" + ex.Message, "Error");
-           
                     return;
                 }
             }
@@ -193,6 +212,7 @@ namespace SerialCom
                 radioButtonReceiveDataASCII.Enabled = true;
                 radioButtonReceiveDataHEX.Enabled = true;
                 buttonSendData.Enabled = false;
+                Button_Refresh.Enabled = true;
 
                 buttonOpenCloseCom.Text = "打开串口";
             }
@@ -309,7 +329,7 @@ namespace SerialCom
 
 
         //窗体关闭时
-        private void Form1_Closing(object sender, EventArgs e)
+        private void MainForm_Closing(object sender, EventArgs e)
         {
             if (serialPort.IsOpen)
             {
@@ -318,6 +338,7 @@ namespace SerialCom
             
         }
 
+        //刷新串口
         private void Button_Refresh_Click(object sender, EventArgs e)
         {
             comboBoxCom.Text = "";
@@ -329,18 +350,38 @@ namespace SerialCom
                 MessageBox.Show("本机没有串口！", "Error");
                 return;
             }
+
             //添加串口
             foreach (string s in str)
             {
                 comboBoxCom.Items.Add(s);
             }
-            //设置默认串口选项
-            comboBoxCom.SelectedIndex = -1;
+
+            //设置默认串口
+            comboBoxCom.SelectedIndex = 0;
+            comboBoxBaudRate.SelectedIndex = 0;
+            comboBoxDataBit.SelectedIndex = 3;
+            comboBoxCheckBit.SelectedIndex = 0;
+            comboBoxStopBit.SelectedIndex = 0;
+
         }
 
-        private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        // 重置串口参数设置
+        private void ResetPortConfToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            comboBoxCom.SelectedIndex = 0;
+            comboBoxBaudRate.SelectedIndex = 0;
+            comboBoxDataBit.SelectedIndex = 3;
+            comboBoxCheckBit.SelectedIndex = 0;
+            comboBoxStopBit.SelectedIndex = 0;
+            radioButtonSendDataASCII.Checked = true;
+            radioButtonReceiveDataASCII.Checked = true;
+
         }
     }
 }
