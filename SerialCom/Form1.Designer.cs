@@ -34,6 +34,7 @@
             this.ExitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuTools = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuSetting = new System.Windows.Forms.ToolStripMenuItem();
+            this.ResetPortConfToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuIHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.AboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AuthorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,7 +65,7 @@
             this.buttonSendData = new System.Windows.Forms.Button();
             this.textBoxSend = new System.Windows.Forms.TextBox();
             this.Button_Refresh = new System.Windows.Forms.Button();
-            this.ResetPortConfToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SaveReceiveDataToFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.groupBoxSerialPortSetting.SuspendLayout();
             this.groupBoxSendSetting.SuspendLayout();
@@ -90,6 +91,7 @@
             // MenuFile
             // 
             this.MenuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.SaveReceiveDataToFileToolStripMenuItem,
             this.ExitToolStripMenuItem});
             this.MenuFile.Name = "MenuFile";
             this.MenuFile.Size = new System.Drawing.Size(51, 24);
@@ -98,7 +100,7 @@
             // ExitToolStripMenuItem
             // 
             this.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem";
-            this.ExitToolStripMenuItem.Size = new System.Drawing.Size(114, 26);
+            this.ExitToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
             this.ExitToolStripMenuItem.Text = "退出";
             this.ExitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
@@ -115,6 +117,13 @@
             this.MenuSetting.Name = "MenuSetting";
             this.MenuSetting.Size = new System.Drawing.Size(51, 24);
             this.MenuSetting.Text = "设置";
+            // 
+            // ResetPortConfToolStripMenuItem
+            // 
+            this.ResetPortConfToolStripMenuItem.Name = "ResetPortConfToolStripMenuItem";
+            this.ResetPortConfToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.ResetPortConfToolStripMenuItem.Text = "重置串口设置";
+            this.ResetPortConfToolStripMenuItem.Click += new System.EventHandler(this.ResetPortConfToolStripMenuItem_Click);
             // 
             // MenuIHelp
             // 
@@ -426,12 +435,12 @@
             this.Button_Refresh.UseVisualStyleBackColor = true;
             this.Button_Refresh.Click += new System.EventHandler(this.Button_Refresh_Click);
             // 
-            // ResetPortConfToolStripMenuItem
+            // SaveReceiveDataToFileToolStripMenuItem
             // 
-            this.ResetPortConfToolStripMenuItem.Name = "ResetPortConfToolStripMenuItem";
-            this.ResetPortConfToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
-            this.ResetPortConfToolStripMenuItem.Text = "重置串口设置";
-            this.ResetPortConfToolStripMenuItem.Click += new System.EventHandler(this.ResetPortConfToolStripMenuItem_Click);
+            this.SaveReceiveDataToFileToolStripMenuItem.Name = "SaveReceiveDataToFileToolStripMenuItem";
+            this.SaveReceiveDataToFileToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.SaveReceiveDataToFileToolStripMenuItem.Text = "保存接收数据";
+            this.SaveReceiveDataToFileToolStripMenuItem.Click += new System.EventHandler(this.SaveReceiveDataToFileToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -509,6 +518,7 @@
         private System.Windows.Forms.ToolStripMenuItem ContributorSylvesterLiToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ExitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ResetPortConfToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem SaveReceiveDataToFileToolStripMenuItem;
     }
 }
 

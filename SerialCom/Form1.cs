@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,9 @@ namespace SerialCom
 
         //实例化串口对象
         SerialPort serialPort = new SerialPort();
+
+        String saveDataFile = null;
+        FileStream saveDataFS = null;
 
         public MainForm()
         {
@@ -134,9 +138,6 @@ namespace SerialCom
 
                     
 
-
-                    
-
                     switch (strStopBit)            //停止位
                     {
                         case "1":
@@ -169,8 +170,11 @@ namespace SerialCom
                     }
 
 
-                    
 
+                    if (saveDataFile != null)
+                    {
+                        saveDataFS = File.Create(saveDataFile);
+                    }
 
                     //打开串口
                     serialPort.Open();
@@ -215,6 +219,13 @@ namespace SerialCom
                 Button_Refresh.Enabled = true;
 
                 buttonOpenCloseCom.Text = "打开串口";
+
+                if (saveDataFS != null)
+                {
+                    saveDataFS.Close(); // 关闭文件
+                    saveDataFS = null;//释放文件句柄
+                }
+
             }
         }
 
@@ -228,15 +239,21 @@ namespace SerialCom
                 DateTime dateTimeNow = DateTime.Now;
                 //dateTimeNow.GetDateTimeFormats();
                 textBoxReceive.Text += string.Format("{0}\r\n", dateTimeNow);
-                    //dateTimeNow.GetDateTimeFormats('f')[0].ToString() + "\r\n";
+                //dateTimeNow.GetDateTimeFormats('f')[0].ToString() + "\r\n";
                 textBoxReceive.ForeColor = Color.Red;    //改变字体的颜色
 
                 if (radioButtonReceiveDataASCII.Checked == true) //接收格式为ASCII
                 {
                     try
                     {
-                        textBoxReceive.Text += serialPort.ReadLine() + "\r\n";
-
+                        String input = serialPort.ReadLine();
+                        textBoxReceive.Text += input + "\r\n";
+                        // save data to file
+                        if (saveDataFS != null)
+                        {
+                            byte[] info = new UTF8Encoding(true).GetBytes(input + "\r\n");
+                            saveDataFS.Write(info, 0, info.Length);
+                        }
                     }
                     catch(System.Exception ex)
                     {
@@ -266,6 +283,13 @@ namespace SerialCom
                             textBoxReceive.ScrollToCaret();//滚动到光标处
                             //textBoxReceive.Text += hexOutput + " ";
 
+                        }
+
+                        // save data to file
+                        if (saveDataFS != null)
+                        {
+                            byte[] info = new UTF8Encoding(true).GetBytes(input + "\r\n");
+                            saveDataFS.Write(info, 0, info.Length);
                         }
 
 
@@ -335,7 +359,13 @@ namespace SerialCom
             {
                 serialPort.Close();//关闭串口
             }
-            
+
+            if (saveDataFS != null)
+            {
+                saveDataFS.Close(); // 关闭文件
+                saveDataFS = null;//释放文件句柄
+            }
+
         }
 
         //刷新串口
@@ -366,8 +396,19 @@ namespace SerialCom
 
         }
 
+        // 退出
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (serialPort.IsOpen)
+            {
+                serialPort.Close();//关闭串口
+            }
+            if (saveDataFS != null)
+            {
+                saveDataFS.Close(); // 关闭文件
+                saveDataFS = null;//释放文件句柄
+            }
+
             this.Close();
         }
 
@@ -381,6 +422,22 @@ namespace SerialCom
             comboBoxStopBit.SelectedIndex = 0;
             radioButtonSendDataASCII.Checked = true;
             radioButtonReceiveDataASCII.Checked = true;
+
+        }
+
+        // 保存接收数据到文件
+        private void SaveReceiveDataToFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Txt |*.txt";
+            saveFileDialog.Title = "保存接收到的数据到文件中";
+            saveFileDialog.ShowDialog();
+
+            if (saveFileDialog.FileName != null)
+            {
+                saveDataFile = saveFileDialog.FileName;
+            }
+
 
         }
     }
