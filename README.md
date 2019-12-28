@@ -1,7 +1,8 @@
 # SerialPort-Communication
 C#实现的串口通信
 
-下面最新效果图来自 https://github.com/SylvesterLi/SerialPort-Communication 
+下面最新效果图来自 https://github.com/SylvesterLi/SerialPort-Communication
+
 编译好的可执行文件在Release下 https://github.com/naihaishy/SerialPort-Communication/releases
 
 ## WinForm
